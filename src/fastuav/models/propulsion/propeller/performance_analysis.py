@@ -48,9 +48,13 @@ class PropellerPerformanceModel:
         Valid in any condition (hover and forward flight).
         """
         v_i = PropellerPerformanceModel.induced_velocity(F_pro, D_pro, V_inf, alpha, rho_air)
-        try:
-            eta = (V_inf * np.sin(alpha) + v_i) / (W_pro / (2 * np.pi) * D_pro) * c_t / c_p
-        except (ZeroDivisionError, ValueError):
+        # Guard against divisions by zero or invalid values that would propagate NaNs through OpenMDAO.
+        denom = (W_pro / (2 * np.pi) * D_pro) if D_pro else 0.0
+        if not denom or not c_p or not np.isfinite(denom):
+            return 0.0
+        with np.errstate(divide="ignore", invalid="ignore"):
+            eta = (V_inf * np.sin(alpha) + v_i) / denom * c_t / c_p
+        if not np.isfinite(eta):
             eta = 0.0
         return eta
 
