@@ -601,7 +601,7 @@
   </optimization>
   <models>
     <generator>
-      <cons units="kg/kWh" is_input="True">0.25<!--Thermal generator fuel consumption (kg/kWh usable)--></cons>
+      <cons units="kg/(kW*h)" is_input="True">0.25<!--Thermal generator fuel consumption (kg/kWh usable)--></cons>
     </generator>
     <propulsion>
       <fixedwing>
