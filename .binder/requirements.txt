@@ -1,0 +1,3 @@
+# Binder environment for running FAST-UAV notebooks
+fastuav
+jupyterlab>=4.0
