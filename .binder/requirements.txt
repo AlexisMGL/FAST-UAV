@@ -1,0 +1,3 @@
+# Binder environment for running FAST-UAV notebooks
+# JupyterLab is installed upfront; the FAST-UAV package is installed from the repo in postBuild.
+jupyterlab>=4.0
