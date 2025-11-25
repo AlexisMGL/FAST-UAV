@@ -31,7 +31,12 @@ class GeneratorEnergySizing(om.ExplicitComponent):
 
         # User inputs
         self.add_input("mission:sizing:nofuel", val=0.0, units="km")
-        self.add_input("models:generator:cons", val=0.0, desc="Fuel consumption in kg/kWh")
+        self.add_input(
+            "models:generator:cons",
+            val=0.0,
+            units="kg/(kW*h)",
+            desc="Fuel consumption in kg/kWh",
+        )
 
         # Outputs used downstream
         self.add_output(f"mission:{mission_name}:generator:energy:{FW_PROPULSION}", units="kJ")
