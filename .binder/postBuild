@@ -2,4 +2,5 @@
 set -euo pipefail
 
 # Install the FAST-UAV package from the repository contents after they have been copied in place.
-python -m pip install --no-cache-dir -e .
+# Editable mode is not supported by this project's build backend, so we install normally.
+python -m pip install --no-cache-dir .
