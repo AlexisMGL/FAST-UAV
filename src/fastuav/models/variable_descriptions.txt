@@ -702,6 +702,11 @@ mission:sizing:main_route:cruise:speed:fixedwing || Cruise speed for main route 
 mission:sizing:main_route:hover:altitude || Hover altitude for main route of sizing mission
 mission:sizing:main_route:hover:duration || Duration of hover segment for main route of sizing mission
 mission:sizing:main_route:hover:energy || Energy consumption of hover segment for main route of sizing mission
+mission:sizing:nofuel || Minimum range to be flown with generator off / empty tank (km)
+mission:sizing:generator:energy:fixedwing || Portion of sizing mission energy covered by generator (fixed-wing)
+mission:sizing:generator:energy:multirotor || Portion of sizing mission energy covered by generator (multirotor)
+mission:sizing:nofuel:energy:fixedwing || Battery energy reserved to fly the no-fuel cruise distance
+mission:sizing:nofuel:energy:multirotor || Battery energy reserved to perform VTOL landing with no fuel
 mission:sizing:main_route:takeoff:altitude || Takeoff altitude for main route of sizing mission
 mission:sizing:payload:mass || Design payload mass
 mission:sizing:payload:power:multirotor || Design payload consumption (connected to multirotor battery)
@@ -709,6 +714,8 @@ mission:sizing:payload:power:fixedwing || Design payload consumption (connected 
 mission:sizing:thrust_weight_ratio:multirotor || Thrust-to-weight ratio for multirotor propulsion
 mission:sizing:main_route:stall:speed:fixedwing || Minimum required stall speed
 mission:sizing:payload:volume || Design payload volume
+models:generator:cons || Thermal generator fuel consumption (kg/kWh usable)
+data:weight:propulsion:generator:fuel:mass || Generator fuel mass included in MTOW
 
 # Uncertainty analysis
 uncertainty:aerodynamics:abs || (variable for uncertainty analysis)

@@ -135,6 +135,7 @@
       <thrust_weight_ratio>
         <multirotor is_input="True">1.3<!--Thrust-to-weight ratio for multirotor propulsion--></multirotor>
       </thrust_weight_ratio>
+      <nofuel units="km" is_input="True">5.0<!--Minimum range to guarantee with empty tank / generator off--></nofuel>
       <main_route>
         <cruise>
           <altitude units="m" is_input="True">150.0<!--Cruise altitude for main route of sizing mission--></altitude>
@@ -599,6 +600,9 @@
     </variables>
   </optimization>
   <models>
+    <generator>
+      <cons units="kg/kWh" is_input="True">0.25<!--Thermal generator fuel consumption (kg/kWh usable)--></cons>
+    </generator>
     <propulsion>
       <fixedwing>
         <battery>

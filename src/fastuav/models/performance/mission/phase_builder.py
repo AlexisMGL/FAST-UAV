@@ -152,6 +152,7 @@ class PhaseComponent(om.ExplicitComponent):
             self.add_input("data:propulsion:%s:propeller:Cp:dynamic:polynomial" % propulsion_id,
                            shape_by_conn=True, val=np.nan, units=None)
             self.add_input("mission:%s:%s:%s:payload:power" % (mission_name, route_name, phase_name), val=np.nan, units="W")
+            self.add_input("data:weight:propulsion:generator:fuel:mass", val=0.0, units="kg")
             if propulsion_id == MR_PROPULSION:
                 self.add_input("data:aerodynamics:%s:CD0" % propulsion_id, val=np.nan, units=None)
                 self.add_input("data:geometry:projected_area:front", val=np.nan, units="m**2")
@@ -202,11 +203,13 @@ class PhaseComponent(om.ExplicitComponent):
         else:
             # flight parameters
             tow = inputs["mission:%s:%s:tow" % (mission_name, route_name)]
+            fuel_mass = inputs["data:weight:propulsion:generator:fuel:mass"]
+            tow_effective = max(tow - 0.5 * fuel_mass, 0.0)  # account for fuel burn during the mission
             dISA = inputs["mission:%s:dISA" % mission_name]
             RoC = inputs["mission:%s:%s:climb:rate" % (mission_name, route_name)] if phase_name == CLIMB_TAG else 0.0
 
             # setup flight model
-            flight_model = FlightPerformanceModel(propulsion_id, tow, V, RoC, altitude, dISA)
+            flight_model = FlightPerformanceModel(propulsion_id, tow_effective, V, RoC, altitude, dISA)
             flight_model.battery_voltage = inputs["data:propulsion:%s:battery:voltage" % propulsion_id]
             flight_model.esc_efficiency = inputs["data:propulsion:%s:esc:efficiency" % propulsion_id]
             flight_model.gearbox_ratio = inputs["data:propulsion:%s:gearbox:N_red" % propulsion_id]

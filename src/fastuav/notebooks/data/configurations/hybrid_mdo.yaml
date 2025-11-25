@@ -305,6 +305,12 @@ optimization:
         
       #- name: optimization:constraints:mission:sizing:energy:multirotor  # energy requirement to fulfill mission (e.g. for mass minimization objective)
       #  lower: 0.0
+        
+      - name: optimization:constraints:mission:sizing:nofuel:fixedwing  # ensure buffer energy for no-fuel cruise
+        lower: 0.0
+        
+      - name: optimization:constraints:mission:sizing:nofuel:multirotor  # ensure buffer energy for VTOL landing
+        lower: 0.0
       
 
     objective:

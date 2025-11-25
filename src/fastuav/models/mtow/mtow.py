@@ -68,6 +68,7 @@ class MtowCalculation(om.ExplicitComponent):
         propulsion_id_list = self.options["propulsion_id_list"]
         self.add_input("mission:sizing:payload:mass", val=np.nan, units="kg")
         self.add_input("data:weight:misc:mass", val=0.0, units="kg")
+        self.add_input("data:weight:propulsion:generator:fuel:mass", val=0.0, units="kg")
 
         for propulsion_id in propulsion_id_list:
             self.add_input("data:weight:propulsion:%s:gearbox:mass" % propulsion_id, val=0.0, units="kg")
@@ -94,7 +95,11 @@ class MtowCalculation(om.ExplicitComponent):
 
     def compute(self, inputs, outputs):
         propulsion_id_list = self.options["propulsion_id_list"]
-        mtow = inputs["mission:sizing:payload:mass"] + inputs["data:weight:misc:mass"]
+        mtow = (
+            inputs["mission:sizing:payload:mass"]
+            + inputs["data:weight:misc:mass"]
+            + inputs["data:weight:propulsion:generator:fuel:mass"]
+        )
 
         for propulsion_id in propulsion_id_list:
             mtow += ((inputs["data:weight:propulsion:%s:gearbox:mass" % propulsion_id]
@@ -124,6 +129,8 @@ class MtowCalculation(om.ExplicitComponent):
 
         partials["data:weight:mtow",
                  "data:weight:misc:mass"] = 1.0
+        partials["data:weight:mtow",
+                 "data:weight:propulsion:generator:fuel:mass"] = 1.0
 
         for propulsion_id in propulsion_id_list:
             N_pro = inputs["data:propulsion:%s:propeller:number" % propulsion_id]
