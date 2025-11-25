@@ -45,6 +45,15 @@ fastoad notebooks -p fastuav
 ```
 Then run the Jupyter server as indicated in the obtained message.
 
+🚀 Launch in Binder
+-------------------
+
+You can explore the packaged notebooks directly from your browser with [Binder](https://mybinder.org/). The repository now ships with a Binder configuration that installs `fastuav` from PyPI and launches JupyterLab:
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/SizingLab/FAST-UAV/HEAD?urlpath=lab)
+
+Once the environment has started, open the notebooks located in `src/fastuav/notebooks/`.
+
 📚 Citation
 ------------
 This project is part of Félix Pollet's PhD thesis, which is available [here](http://www.theses.fr/2024ESAE0013/document).
