@@ -74,6 +74,8 @@ class Endurance(om.ExplicitComponent):
             self.add_input("mission:sizing:main_route:%s:speed:%s" % (phase_name, propulsion_id), val=0.0, units="m/s")
             self.add_output("data:performance:range:%s" % phase_name, units="m")
         self.add_output("data:performance:endurance:%s" % phase_name, units="min")
+        # For reporting the generator contribution in kWh
+        self.add_output("data:propulsion:%s:generator:energy_stored:kWh" % propulsion_id, units="kW*h")
 
     def setup_partials(self):
         self.declare_partials("*", "*", method="exact")
