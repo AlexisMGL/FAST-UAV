@@ -20,6 +20,13 @@ class BatteryEstimationModels(om.Group):
         #     uncertain_outputs={"data:propulsion:battery:energy:estimated": "kJ"},
         # )
 
+        add_subsystem_with_deviation(
+            self,
+            "power",
+            Power(),
+            uncertain_outputs={"data:propulsion:battery:power:max:estimated": "W"},
+        )
+
         self.add_subsystem("capacity", Capacity(), promotes=["*"])
 
         add_subsystem_with_deviation(
