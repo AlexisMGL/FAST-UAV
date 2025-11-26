@@ -92,6 +92,7 @@ class Endurance(om.ExplicitComponent):
         power = I_bat * voltage_est  # [W]
         available_energy = (C_ratio * E_bat + E_gen) * 1000.0  # [J]
         t_max = available_energy / power if power > 0 else 0.0  # [s] Max. flight time
+        outputs["data:propulsion:%s:generator:energy_stored:kWh" % propulsion_id] = E_gen / 3600.0
 
         # Range calculation
         if phase_name != HOVER_TAG:

@@ -56,9 +56,11 @@ class GeneratorEnergySizing(om.ExplicitComponent):
         hover_energy = inputs[f"mission:{mission_name}:main_route:hover:energy"]
         cons = inputs["models:generator:cons"]
 
-        energy_per_m = cruise_energy / cruise_distance if cruise_distance > 0 else 0.0
+        # Handle possible zero/short cruise distance to avoid infeasible constraints
+        energy_per_m = cruise_energy / cruise_distance if cruise_distance > 1e-6 else 0.0
         nofuel_energy_fw = energy_per_m * nofuel_distance_m
-        nofuel_energy_mr = hover_energy  # VTOL landing requirement
+        # VTOL landing requirement (hover). If hover energy is zero, no extra reserve.
+        nofuel_energy_mr = hover_energy
 
         mission_energy_fw = inputs[f"mission:{mission_name}:energy:{FW_PROPULSION}"]
         mission_energy_mr = inputs[f"mission:{mission_name}:energy:{MR_PROPULSION}"]
@@ -238,9 +240,11 @@ class MissionConstraints(om.ExplicitComponent):
             E_bat = inputs["data:propulsion:%s:battery:energy" % propulsion_id]
             C_ratio = inputs["data:propulsion:%s:battery:DoD:max" % propulsion_id]
             usable_bat = E_bat * C_ratio
-            energy_con = (usable_bat + E_gen - E_mission) / (usable_bat + E_gen) if (usable_bat + E_gen) > 0 else -1e6
+            # Protect against zero available energy; if none, set a large negative feasibility metric
+            denom = usable_bat + E_gen
+            energy_con = (denom - E_mission) / denom if denom > 1e-9 else -1e6
             outputs["optimization:constraints:mission:%s:energy:%s" % (mission_name, propulsion_id)] = energy_con
-            nofuel_con = (usable_bat - E_nofuel) / usable_bat if usable_bat > 0 else -1e6
+            nofuel_con = (usable_bat - E_nofuel) / usable_bat if usable_bat > 1e-9 else -1e6
             outputs["optimization:constraints:mission:%s:nofuel:%s" % (mission_name, propulsion_id)] = nofuel_con
 
     def compute_partials(self, inputs, partials, discrete_inputs=None):
@@ -258,29 +262,29 @@ class MissionConstraints(om.ExplicitComponent):
             partials[
                 "optimization:constraints:mission:%s:energy:%s" % (mission_name, propulsion_id),
                 "mission:%s:energy:%s" % (mission_name, propulsion_id),
-            ] = -1.0 / denom if denom > 0 else 0.0
+            ] = -1.0 / denom if denom > 1e-9 else 0.0
             partials[
                 "optimization:constraints:mission:%s:energy:%s" % (mission_name, propulsion_id),
                 "data:propulsion:%s:battery:energy" % propulsion_id,
-            ] = (C_ratio * E_mission) / (denom**2) if denom > 0 else 0.0
+            ] = (C_ratio * E_mission) / (denom**2) if denom > 1e-9 else 0.0
             partials[
                 "optimization:constraints:mission:%s:energy:%s" % (mission_name, propulsion_id),
                 "data:propulsion:%s:battery:DoD:max" % propulsion_id,
-            ] = (E_bat * E_mission) / (denom**2) if denom > 0 else 0.0
+            ] = (E_bat * E_mission) / (denom**2) if denom > 1e-9 else 0.0
             partials[
                 "optimization:constraints:mission:%s:energy:%s" % (mission_name, propulsion_id),
                 "mission:%s:generator:energy:%s" % (mission_name, propulsion_id),
-            ] = E_mission / (denom**2) if denom > 0 else 0.0
+            ] = E_mission / (denom**2) if denom > 1e-9 else 0.0
 
             partials[
                 "optimization:constraints:mission:%s:nofuel:%s" % (mission_name, propulsion_id),
                 "mission:%s:nofuel:energy:%s" % (mission_name, propulsion_id),
-            ] = -1.0 / usable_bat if usable_bat > 0 else 0.0
+            ] = -1.0 / usable_bat if usable_bat > 1e-9 else 0.0
             partials[
                 "optimization:constraints:mission:%s:nofuel:%s" % (mission_name, propulsion_id),
                 "data:propulsion:%s:battery:energy" % propulsion_id,
-            ] = (C_ratio * E_nofuel) / (usable_bat**2) if usable_bat > 0 else 0.0
+            ] = (C_ratio * E_nofuel) / (usable_bat**2) if usable_bat > 1e-9 else 0.0
             partials[
                 "optimization:constraints:mission:%s:nofuel:%s" % (mission_name, propulsion_id),
                 "data:propulsion:%s:battery:DoD:max" % propulsion_id,
-            ] = (E_bat * E_nofuel) / (usable_bat**2) if usable_bat > 0 else 0.0
+            ] = (E_bat * E_nofuel) / (usable_bat**2) if usable_bat > 1e-9 else 0.0
