@@ -64,9 +64,12 @@ class Endurance(om.ExplicitComponent):
         propulsion_id = self.options["propulsion_id"]
         phase_name = self.options["phase_name"]
         self.add_input("data:propulsion:%s:battery:capacity" % propulsion_id, val=np.nan, units="A*s")
+        self.add_input("data:propulsion:%s:battery:energy" % propulsion_id, val=np.nan, units="kJ")
         self.add_input("data:propulsion:%s:battery:DoD:max" % propulsion_id, val=0.8, units=None)
         self.add_input("data:propulsion:%s:battery:current:%s" % (propulsion_id, phase_name), val=np.nan,
                        units="A")
+        # Additional energy provided by thermal generator (if any)
+        self.add_input("mission:sizing:generator:energy:%s" % propulsion_id, val=0.0, units="kJ")
         if phase_name != HOVER_TAG:
             self.add_input("mission:sizing:main_route:%s:speed:%s" % (phase_name, propulsion_id), val=0.0, units="m/s")
             self.add_output("data:performance:range:%s" % phase_name, units="m")
@@ -80,10 +83,15 @@ class Endurance(om.ExplicitComponent):
         phase_name = self.options["phase_name"]
         C_ratio = inputs["data:propulsion:%s:battery:DoD:max" % propulsion_id]
         C_bat = inputs["data:propulsion:%s:battery:capacity" % propulsion_id]
+        E_bat = inputs["data:propulsion:%s:battery:energy" % propulsion_id]  # kJ
+        E_gen = inputs["mission:sizing:generator:energy:%s" % propulsion_id]
         I_bat = inputs["data:propulsion:%s:battery:current:%s" % (propulsion_id, phase_name)]
 
-        # Endurance calculation
-        t_max = C_ratio * C_bat / I_bat if I_bat > 0 else 0.0  # [s] Max. cruise flight time at design payload
+        # Endurance calculation using available electrical energy (battery DoD + generator contribution)
+        voltage_est = (E_bat * 1000.0) / C_bat if C_bat > 0 else 0.0  # [V] approximate from energy/capacity
+        power = I_bat * voltage_est  # [W]
+        available_energy = (C_ratio * E_bat + E_gen) * 1000.0  # [J]
+        t_max = available_energy / power if power > 0 else 0.0  # [s] Max. flight time
 
         # Range calculation
         if phase_name != HOVER_TAG:
