@@ -158,7 +158,7 @@
           </DoD>
           <current>
             <max>
-              <reference units="A" is_input="True">200.0<!--Multirotor battery max. current reference for scaling law--></reference>
+              <reference units="A" is_input="True">3000.0<!--Multirotor battery max. current reference for scaling law--></reference>
             </max>
           </current>
         </battery>

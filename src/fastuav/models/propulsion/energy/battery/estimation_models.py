@@ -67,7 +67,7 @@ class Energy(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:propulsion:battery:power:max:estimated", val=np.nan, units="W")
-        self.add_input("models:propulsion:battery:current:max:reference", val=np.nan, units="A")
+        self.add_input("models:propulsion:battery:current:max:reference", val=3000.0, units="A")
         self.add_input("models:propulsion:battery:voltage:reference", val=np.nan, units="V")
         self.add_input("models:propulsion:battery:energy:reference", val=np.nan, units="kJ")
         self.add_output("data:propulsion:battery:energy:estimated", units="kJ")
@@ -94,7 +94,7 @@ class Power(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("data:propulsion:battery:energy:estimated", val=np.nan, units="kJ")
-        self.add_input("models:propulsion:battery:current:max:reference", val=np.nan, units="A")
+        self.add_input("models:propulsion:battery:current:max:reference", val=3000.0, units="A")
         self.add_input("models:propulsion:battery:voltage:reference", val=np.nan, units="V")
         self.add_input("models:propulsion:battery:energy:reference", val=np.nan, units="kJ")
         self.add_output("data:propulsion:battery:power:max:estimated", units="W")
@@ -170,7 +170,7 @@ class MaxCurrent(om.ExplicitComponent):
 
     def setup(self):
         self.add_input("models:propulsion:battery:capacity:reference", val=np.nan, units="A*s")
-        self.add_input("models:propulsion:battery:current:max:reference", val=np.nan, units="A")
+        self.add_input("models:propulsion:battery:current:max:reference", val=3000.0, units="A")
         self.add_input("data:propulsion:battery:capacity:estimated", units="A*s")
         self.add_output("data:propulsion:battery:current:max:estimated", units="A")
 
