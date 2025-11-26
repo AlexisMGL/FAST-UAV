@@ -853,5 +853,5 @@
         </multirotor>
       </propulsion>
     </weight>
-  <generator><cons units="kg/(kW*h)" is_input="True">0.25</cons></generator></models>
+  <generator><cons units="kg/(kW*h)" is_input="True">0.8</cons></generator></models>
 </FASTOAD_model>
