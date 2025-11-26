@@ -301,7 +301,7 @@
           </DoD>
           <current>
             <max>
-              <reference units="A" is_input="True">200.0</reference>
+              <reference units="A" is_input="True">3000.0</reference>
             </max>
           </current>
         </battery>
