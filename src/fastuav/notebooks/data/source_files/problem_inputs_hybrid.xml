@@ -603,13 +603,13 @@
       <fixedwing>
         <battery>
           <capacity>
-            <reference units="A*s" is_input="True">20520.0</reference>
+            <reference units="A*s" is_input="True">259200.0</reference>
           </capacity>
           <energy>
-            <reference units="kJ" is_input="True">467.856</reference>
+            <reference units="kJ" is_input="True">14256.0</reference>
           </energy>
           <voltage>
-            <reference units="V" is_input="True">22.8</reference>
+            <reference units="V" is_input="True">55.0</reference>
             <tol units="percent" is_input="True">0.0</tol>
           </voltage>
           <volume>
@@ -800,7 +800,7 @@
         <fixedwing>
           <battery>
             <mass>
-              <reference units="kg" is_input="True">0.68</reference>
+              <reference units="kg" is_input="True">10.0</reference>
             </mass>
           </battery>
           <esc>
