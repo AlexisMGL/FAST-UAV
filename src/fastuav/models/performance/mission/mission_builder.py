@@ -224,7 +224,8 @@ class MissionConstraints(om.ExplicitComponent):
             )
 
     def setup_partials(self):
-        self.declare_partials("*", "*", method="exact")
+        # Use finite-difference to stay robust with the generator coupling.
+        self.declare_partials("*", "*", method="fd")
 
     def compute(self, inputs, outputs):
         mission_name = self.options["mission_name"]
