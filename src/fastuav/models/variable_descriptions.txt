@@ -72,6 +72,7 @@ data:propulsion:multirotor:battery:energy:estimated || Multirotor battery energy
 data:propulsion:multirotor:battery:energy:catalogue || Multirotor battery energy (catalogue value)
 models:propulsion:multirotor:battery:energy:reference || Multirotor battery energy reference for scaling law
 optimization:variables:propulsion:multirotor:battery:energy:k || Sizing coefficient on multirotor battery energy
+optimization:variables:propulsion:multirotor:battery:power:k || Sizing coefficient on multirotor battery max power
 data:weight:propulsion:multirotor:battery:mass || Multirotor battery mass
 data:weight:propulsion:multirotor:battery:mass:estimated || Multirotor battery mass (estimated value)
 data:weight:propulsion:multirotor:battery:mass:catalogue || Multirotor battery mass (catalogue value)
@@ -137,6 +138,7 @@ data:propulsion:fixedwing:battery:energy:estimated || Fixed-wing battery energy 
 data:propulsion:fixedwing:battery:energy:catalogue || Fixed-wing battery energy (catalogue value)
 models:propulsion:fixedwing:battery:energy:reference || Fixed-wing battery energy reference for scaling law
 optimization:variables:propulsion:fixedwing:battery:energy:k || Sizing coefficient on fixed-wing battery energy
+optimization:variables:propulsion:fixedwing:battery:power:k || Sizing coefficient on fixed-wing battery max power
 data:weight:propulsion:fixedwing:battery:mass || Fixed-wing battery mass
 data:weight:propulsion:fixedwing:battery:mass:estimated || Fixed-wing battery mass (estimated value)
 data:weight:propulsion:fixedwing:battery:mass:catalogue || Fixed-wing battery mass (catalogue value)

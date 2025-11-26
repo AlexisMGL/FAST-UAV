@@ -17,12 +17,12 @@ class BatteryDefinitionParameters(om.Group):
 
     def setup(self):
 
-        # add_subsystem_with_deviation(
-        #     self,
-        #     "power",
-        #     Power(),
-        #     uncertain_outputs={"data:propulsion:battery:power:max:estimated": "W"},
-        # )
+        add_subsystem_with_deviation(
+            self,
+            "power",
+            Power(),
+            uncertain_outputs={"data:propulsion:battery:power:max:estimated": "W"},
+        )
 
         add_subsystem_with_deviation(
             self,
